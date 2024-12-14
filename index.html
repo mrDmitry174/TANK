@@ -32,7 +32,6 @@
 
     <!-- Мобильное управление -->
     <div class="mobile-controls">
-        <!-- Левый джойстик для движения -->
         <div class="movement-controls">
             <button class="control-btn move-up">↑</button>
             <div class="horizontal-controls">
@@ -42,7 +41,6 @@
             <button class="control-btn move-down">↓</button>
         </div>
 
-        <!-- Правый джойстик для башни и стрельбы -->
         <div class="turret-controls">
             <button class="control-btn rotate-left">↺</button>
             <button class="control-btn shoot">🔥</button>
@@ -56,12 +54,12 @@
         <div class="message">Ожидание второго игрока...</div>
     </div>
 
-    <!-- Скрипты -->
-    <script src="map.js"></script>
-    <script src="collision.js"></script>
+    <!-- Скрипты в правильном порядке -->
     <script src="tank.js"></script>
     <script src="bullet.js"></script>
     <script src="block.js"></script>
+    <script src="collision.js"></script>
+    <script src="map.js"></script>
     <script src="mapEditor.js"></script>
     <script src="controls.js"></script>
     <script src="game.js"></script>
