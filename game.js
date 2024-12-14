@@ -162,10 +162,8 @@ class Game {
     }
 
     connectToServer() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/ws`;
-        
-        this.ws = new WebSocket(wsUrl);
+        // Подключаемся к нашему серверу на Glitch
+        this.ws = new WebSocket('wss://cuddly-knotty-box.glitch.me/ws');
         
         this.ws.onopen = () => {
             console.log('Connected to server');
@@ -251,7 +249,7 @@ class Game {
         document.querySelector('.waiting-screen .message').textContent = 'Соединение потеряно. Переподключение...';
         document.querySelector('.waiting-screen').style.display = 'flex';
         
-        // Пробуем пере��одключиться через 3 секунды
+        // Пробуем переодключиться через 3 секунды
         setTimeout(() => {
             this.connectToServer();
         }, 3000);
