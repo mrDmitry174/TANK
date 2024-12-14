@@ -138,20 +138,6 @@ class Game {
         return false;
     }
 
-    setupNetworking() {
-        this.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.handleServerMessage(data);
-        };
-
-        // Отправляем обновления позиции
-        setInterval(() => {
-            if (this.gameState === 'playing') {
-                this.sendPlayerState();
-            }
-        }, 50); // 20 раз в секунду
-    }
-
     handleServerMessage(data) {
         switch(data.type) {
             case 'gameStart':
@@ -176,7 +162,6 @@ class Game {
     }
 
     connectToServer() {
-        // Используем правильный URL с путем /ws
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const wsUrl = `${protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/ws`;
         
@@ -185,6 +170,13 @@ class Game {
         this.ws.onopen = () => {
             console.log('Connected to server');
             this.showWaitingScreen();
+            
+            // Добавляем интервал отправки состояния
+            setInterval(() => {
+                if (this.gameState === 'playing') {
+                    this.sendPlayerState();
+                }
+            }, 50);
         };
         
         this.ws.onclose = () => {
@@ -259,7 +251,7 @@ class Game {
         document.querySelector('.waiting-screen .message').textContent = 'Соединение потеряно. Переподключение...';
         document.querySelector('.waiting-screen').style.display = 'flex';
         
-        // Пробуем переподключиться через 3 секунды
+        // Пробуем пере��одключиться через 3 секунды
         setTimeout(() => {
             this.connectToServer();
         }, 3000);
