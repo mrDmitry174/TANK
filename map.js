@@ -2,29 +2,11 @@ class GameMap {
     constructor(container) {
         this.container = container;
         this.blocks = [];
-        this.element = this.createElement();
-        this.container.appendChild(this.element);
     }
 
-    createElement() {
-        const map = document.createElement('div');
-        map.className = 'game-map';
-        return map;
-    }
-
-    addBlock(x, y, type) {
-        const existingBlock = this.blocks.find(block => 
-            block.x === x && block.y === y
-        );
-        
-        if (existingBlock) {
-            return null;
-        }
-
-        const block = new Block(x, y, type);
+    addBlock(block) {
         this.blocks.push(block);
-        this.element.appendChild(block.element);
-        return block;
+        this.container.appendChild(block.element);
     }
 
     removeBlock(block) {
@@ -39,4 +21,4 @@ class GameMap {
         this.blocks.forEach(block => block.element.remove());
         this.blocks = [];
     }
-} 
+}
