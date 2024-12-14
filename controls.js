@@ -49,21 +49,11 @@ class Controls {
         this.setupMobileButton(shoot, () => this.shoot());
     }
 
-    setupMobileButton(button, callback) {
-        let interval;
-        
+    setupMobileButton(button, action) {
         button.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            callback();
-            interval = setInterval(callback, 100);
-        });
-
-        button.addEventListener('touchend', () => {
-            clearInterval(interval);
-            if (callback === this.game.player.moveForward || 
-                callback === this.game.player.moveBackward) {
-                this.game.player.stopMoving();
-            }
+            action();
+            this.game.sendPlayerState();
         });
     }
 

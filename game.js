@@ -169,12 +169,12 @@ class Game {
             console.log('Connected to server');
             this.showWaitingScreen();
             
-            // Добавляем интервал отправки состояния
+            // Увеличиваем ин��ервал с 50мс до 100мс
             setInterval(() => {
                 if (this.gameState === 'playing') {
                     this.sendPlayerState();
                 }
-            }, 50);
+            }, 100);
         };
         
         this.ws.onclose = () => {

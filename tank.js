@@ -59,15 +59,20 @@ class Tank {
     }
 
     moveForward() {
+        // Уменьшаем количество проверок коллизий
+        if (this.lastCollisionCheck && Date.now() - this.lastCollisionCheck < 30) {
+            return;
+        }
+        this.lastCollisionCheck = Date.now();
+        
         const radians = (this.rotation - 90) * Math.PI / 180;
-        const newX = this.position.x + Math.cos(radians) * this.moveSpeed;  // Используем moveSpeed
+        const newX = this.position.x + Math.cos(radians) * this.moveSpeed;
         const newY = this.position.y + Math.sin(radians) * this.moveSpeed;
         
         if (!this.checkCollision(newX, newY)) {
             this.position.x = newX;
             this.position.y = newY;
             this.updatePosition();
-            this.startTrackAnimation('forward');
         }
     }
 
@@ -141,7 +146,7 @@ class Tank {
     shoot() {
         if (!this.canShoot) return null;
         
-        // Бокируем стрельбу
+        // Бокуем стрельбу
         this.canShoot = false;
         
         // Создаем пулю
@@ -221,7 +226,7 @@ class Tank {
             // Получаем центр танка
             const tankCenter = {
                 x: this.position.x + 25,  // Половина ширины танка
-                y: this.position.y + 27   // Половина высоты танка
+                y: this.position.y + 27   // Половина высоты танк��
             };
 
             const blockBox = block.getCollisionBox();
