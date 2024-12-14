@@ -1,0 +1,180 @@
+.tank {
+    position: absolute;
+    width: 50px;
+    height: 54px;
+    background: #849B24;
+    border: 2px solid #566517;
+    transform-style: preserve-3d;
+    transform: rotateX(10deg);
+    box-shadow: 
+        -3px 3px 5px rgba(0, 0, 0, 0.3),
+        3px 3px 5px rgba(0, 0, 0, 0.3),
+        inset 2px -2px 5px rgba(255, 255, 255, 0.3),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.3);
+    z-index: 1;
+    border-radius: 3px;
+    perspective: 1000px;
+}
+
+/* Гусеницы танка */
+.tank::before,
+.tank::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 54px;
+    background: #849B24;
+    top: -2px;
+    border: 2px solid #566517;
+    border-radius: 3px;
+    background-image: 
+        repeating-linear-gradient(0deg,
+            transparent 0px,
+            transparent 4px,
+            rgba(0, 0, 0, 0.2) 4px,
+            rgba(0, 0, 0, 0.2) 8px);
+    background-size: 100% 8px;
+    z-index: 1;
+}
+
+.tank::before {
+    left: -7px;
+}
+
+.tank::after {
+    right: -7px;
+}
+
+/* Башня танка с дулом */
+.tank .turret {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #849B24;
+    top: 50%;
+    left: 50%;
+    border: 2px solid #566517;
+    border-radius: 4px;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+}
+
+/* Дуло */
+.tank .turret::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 31px;
+    background: #849B24;
+    left: 50%;
+    top: -35px;
+    transform: translate(-50%, 0);
+    border-top: 2px solid #566517;
+    border-left: 2px solid #566517;
+    border-right: 2px solid #566517;
+    border-radius: 3px 3px 0 0;
+    z-index: 3;
+}
+
+/* Люк */
+.tank .turret::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #566517;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 2px solid #3d4810;
+    z-index: 4;
+}
+
+/* Анимации гусениц */
+@keyframes trackMoveForward {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 -8px; }
+}
+
+@keyframes trackMoveBackward {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 8px; }
+}
+
+.tank.moving-forward::before,
+.tank.moving-forward::after {
+    animation: trackMoveForward 0.2s linear infinite;
+}
+
+.tank.moving-backward::before,
+.tank.moving-backward::after {
+    animation: trackMoveBackward 0.2s linear infinite;
+}
+
+/* Добавим вместо удаленных стилей */
+.tank .barrel-end {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: 50%;
+    top: -35px;
+    transform: translate(-50%, 0);
+    opacity: 0;  /* Делаем элемент невидимым */
+}
+
+/* Стороны танка */
+.tank .side {
+    position: absolute;
+    border: 1px solid transparent; /* Делаем границы прозрачными */
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0; /* Полностью скрываем в обычном состоянии */
+}
+
+.tank .side.front {
+    width: 58px;
+    height: 0;
+    top: 0;
+    left: -4px;
+    border-top: 1px solid rgba(255, 0, 0, 0.5);
+}
+
+.tank .side.back {
+    width: 58px;
+    height: 0;
+    bottom: 0;
+    left: -4px;
+    border-bottom: 1px solid transparent;
+}
+
+.tank .side.left {
+    width: 0;
+    height: 54px;
+    top: 0;
+    left: -6px;
+    border-left: 1px solid transparent;
+}
+
+.tank .side.right {
+    width: 0;
+    height: 54px;
+    top: 0;
+    right: -6px;
+    border-right: 1px solid transparent;
+}
+
+/* Эффект попадания */
+.tank .side.hit {
+    opacity: 1;
+    border-color: #ff0000;
+    box-shadow: 0 0 10px #ff0000;
+    transition: all 0.2s;
+}
+
+/* Удаляем старую визуализацию коллизий */
+.tank .collision-box,
+.tank .collision-body {
+    display: none;
+}

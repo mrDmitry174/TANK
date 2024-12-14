@@ -1,0 +1,24 @@
+.tank.enemy {
+    background: #8B0000;
+    border-color: #600000;
+}
+
+.tank.enemy::before {
+    background: repeating-linear-gradient(
+        90deg,
+        #600000 0px,
+        #600000 8px,
+        #8B0000 8px,
+        #8B0000 16px
+    );
+}
+
+.tank.enemy .turret {
+    background: #A52A2A;
+    border-color: #800000;
+}
+
+.tank.enemy .turret::after {
+    background: #A52A2A;
+    border-color: #800000;
+} 
