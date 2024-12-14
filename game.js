@@ -176,7 +176,11 @@ class Game {
     }
 
     connectToServer() {
-        this.ws = new WebSocket('wss://cuddly-knotty-box.glitch.me');
+        // Используем правильный URL с путем /ws
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}/ws`;
+        
+        this.ws = new WebSocket(wsUrl);
         
         this.ws.onopen = () => {
             console.log('Connected to server');
@@ -188,14 +192,14 @@ class Game {
             this.handleDisconnect();
         };
         
-        this.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.handleServerMessage(data);
-        };
-        
         this.ws.onerror = (error) => {
             console.error('WebSocket error:', error);
             this.handleDisconnect();
+        };
+        
+        this.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.handleServerMessage(data);
         };
     }
 
