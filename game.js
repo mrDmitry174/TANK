@@ -33,6 +33,15 @@ class Game {
         // Создаем управление
         this.controls = new Controls(this);
         
+        // Инициализация сетевых параметров
+        this.playerId = null;
+        this.roomId = null;
+        this.isHost = false;
+        this.gameState = 'waiting';
+        
+        // Подключаемся к серверу
+        this.connectToServer();
+        
         this.init();
     }
 
@@ -73,7 +82,7 @@ class Game {
     }
 
     checkBulletHit(bullet, tank) {
-        // Не проверяем попадание, если пуля принадлежит этому же танку
+        // Не проверяем попадание, если пуля принадлежи этому же танку
         if (bullet.owner === tank) {
             return false;
         }
@@ -99,7 +108,7 @@ class Game {
             
             // Определяем сторону с учетом поворота танка
             let side;
-            const rotation = tank.rotation % 360;  // Нормализуем угол поворота
+            const rotation = tank.rotation % 360;  // Номализуем угол поворота
             
             if (minDist === distToLeft) {
                 side = rotation === 90 ? 'front' : 
@@ -127,6 +136,139 @@ class Game {
             return true;
         }
         return false;
+    }
+
+    setupNetworking() {
+        this.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.handleServerMessage(data);
+        };
+
+        // Отправляем обновления позиции
+        setInterval(() => {
+            if (this.gameState === 'playing') {
+                this.sendPlayerState();
+            }
+        }, 50); // 20 раз в секунду
+    }
+
+    handleServerMessage(data) {
+        switch(data.type) {
+            case 'gameStart':
+                this.startGame(data);
+                break;
+            case 'playerUpdate':
+                this.updateOpponent(data);
+                break;
+            case 'shoot':
+                this.handleEnemyShoot(data);
+                break;
+            case 'hit':
+                this.handleHit(data);
+                break;
+            case 'gameState':
+                this.updateGameState(data);
+                break;
+            case 'opponentDisconnected':
+                this.handleOpponentDisconnect();
+                break;
+        }
+    }
+
+    connectToServer() {
+        this.ws = new WebSocket('wss://cuddly-knotty-box.glitch.me');
+        
+        this.ws.onopen = () => {
+            console.log('Connected to server');
+            this.showWaitingScreen();
+        };
+        
+        this.ws.onclose = () => {
+            console.log('Disconnected from server');
+            this.handleDisconnect();
+        };
+        
+        this.ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            this.handleServerMessage(data);
+        };
+        
+        this.ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+            this.handleDisconnect();
+        };
+    }
+
+    startGame(data) {
+        this.playerId = data.playerId;
+        this.roomId = data.roomId;
+        this.isHost = data.position === 'bottom';
+        
+        // Скрываем экран ожидания
+        this.hideWaitingScreen();
+        
+        // Позиционируем танки
+        if (this.isHost) {
+            this.player.setPosition(this.gameContainer.offsetWidth / 2, this.gameContainer.offsetHeight - 100);
+            this.enemy.setPosition(this.gameContainer.offsetWidth / 2, 100);
+        } else {
+            this.player.setPosition(this.gameContainer.offsetWidth / 2, 100);
+            this.enemy.setPosition(this.gameContainer.offsetWidth / 2, this.gameContainer.offsetHeight - 100);
+            this.player.rotation = 180;
+        }
+        
+        this.gameState = 'playing';
+        this.startGameLoop();
+    }
+
+    sendPlayerState() {
+        if (this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({
+                type: 'playerState',
+                x: this.player.position.x,
+                y: this.player.position.y,
+                rotation: this.player.rotation,
+                turretRotation: this.player.turretRotation
+            }));
+        }
+    }
+
+    updateOpponent(data) {
+        this.enemy.position.x = data.x;
+        this.enemy.position.y = data.y;
+        this.enemy.rotation = data.rotation;
+        this.enemy.turretRotation = data.turretRotation;
+        this.enemy.updatePosition();
+    }
+
+    showWaitingScreen() {
+        document.querySelector('.waiting-screen').style.display = 'flex';
+    }
+
+    hideWaitingScreen() {
+        document.querySelector('.waiting-screen').style.display = 'none';
+    }
+
+    handleDisconnect() {
+        console.log('Disconnected from server');
+        // Показываем сообщение об отключении
+        document.querySelector('.waiting-screen .message').textContent = 'Соединение потеряно. Переподключение...';
+        document.querySelector('.waiting-screen').style.display = 'flex';
+        
+        // Пробуем переподключиться через 3 секунды
+        setTimeout(() => {
+            this.connectToServer();
+        }, 3000);
+    }
+
+    handleOpponentDisconnect() {
+        console.log('Opponent disconnected');
+        // Показываем сообщение
+        document.querySelector('.waiting-screen .message').textContent = 'Противник отключился. Ожидание нового игрока...';
+        document.querySelector('.waiting-screen').style.display = 'flex';
+        
+        // Сбрасываем состояние игры
+        this.gameState = 'waiting';
     }
 }
 

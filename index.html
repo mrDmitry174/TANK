@@ -20,6 +20,26 @@
 <body>
     <div id="game-container" class="game-container"></div>
 
+    <!-- Добавляем после game-container -->
+    <div class="mobile-controls">
+        <!-- Левый джойстик для движения -->
+        <div class="movement-controls">
+            <button class="control-btn move-up">↑</button>
+            <div class="horizontal-controls">
+                <button class="control-btn move-left">←</button>
+                <button class="control-btn move-right">→</button>
+            </div>
+            <button class="control-btn move-down">↓</button>
+        </div>
+
+        <!-- Правый джойстик для башни и стрельбы -->
+        <div class="turret-controls">
+            <button class="control-btn rotate-left">↺</button>
+            <button class="control-btn shoot">🔥</button>
+            <button class="control-btn rotate-right">↻</button>
+        </div>
+    </div>
+
     <!-- Скрипты -->
     <script src="collision.js"></script>
     <script src="tank.js"></script>
@@ -29,5 +49,11 @@
     <script src="mapEditor.js"></script>
     <script src="controls.js"></script>
     <script src="game.js"></script>
+
+    <!-- Добавляем в body -->
+    <div class="waiting-screen">
+        <div class="spinner"></div>
+        <div class="message">Ожидание второго игрока...</div>
+    </div>
 </body>
 </html>
