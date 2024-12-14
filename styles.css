@@ -143,17 +143,22 @@ html, body {
 /* На мобильных устройствах */
 @media (max-width: 768px) {
     .editor-panel {
-        top: auto;
-        bottom: 10px;
+        top: 10px;
         right: 10px;
         flex-direction: row;
         flex-wrap: wrap;
         max-width: 200px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
     }
 
     .editor-btn {
         padding: 6px 12px;
         font-size: 14px;
+        margin: 2px;
+        white-space: nowrap;
     }
 }
 

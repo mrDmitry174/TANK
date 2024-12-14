@@ -73,6 +73,7 @@ class Tank {
             this.position.x = newX;
             this.position.y = newY;
             this.updatePosition();
+            this.startTrackAnimation('forward');
         }
     }
 
@@ -226,7 +227,7 @@ class Tank {
             // Получаем центр танка
             const tankCenter = {
                 x: this.position.x + 25,  // Половина ширины танка
-                y: this.position.y + 27   // Половина высоты танк��
+                y: this.position.y + 27   // Половина высоты танка
             };
 
             const blockBox = block.getCollisionBox();

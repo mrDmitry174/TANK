@@ -50,11 +50,43 @@ class Controls {
     }
 
     setupMobileButton(button, action) {
-        button.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            action();
-            this.game.sendPlayerState();
-        });
+        if (button.classList.contains('shoot')) {
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const bullet = this.game.player.shoot();
+                if (bullet) {
+                    this.game.addBullet(bullet);
+                    this.game.ws.send(JSON.stringify({
+                        type: 'shoot',
+                        x: bullet.x,
+                        y: bullet.y,
+                        angle: bullet.angle
+                    }));
+                }
+            });
+        } else {
+            let interval;
+            
+            button.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                action();
+                this.game.sendPlayerState();
+                // Добавляем интервал для удержания
+                interval = setInterval(() => {
+                    action();
+                    this.game.sendPlayerState();
+                }, 100);
+            });
+
+            button.addEventListener('touchend', () => {
+                clearInterval(interval);
+                // Останавливаем анимацию гусениц
+                if (action === this.game.player.moveForward || 
+                    action === this.game.player.moveBackward) {
+                    this.game.player.stopMoving();
+                }
+            });
+        }
     }
 
     handleMovement() {
