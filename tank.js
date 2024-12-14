@@ -21,6 +21,12 @@ class Tank {
         this.updateVisibility();
     }
 
+    setPosition(x, y) {
+        this.position.x = x;
+        this.position.y = y;
+        this.updatePosition();
+    }
+
     createElement() {
         const tank = document.createElement('div');
         tank.className = 'tank';
@@ -38,12 +44,15 @@ class Tank {
     }
 
     updatePosition() {
-        this.element.style.left = `${this.position.x}px`;
-        this.element.style.top = `${this.position.y}px`;
-        this.element.style.transform = `rotateX(10deg) rotate(${this.rotation}deg)`;
+        this.element.style.left = this.position.x + 'px';
+        this.element.style.top = this.position.y + 'px';
+        this.element.style.transform = `rotate(${this.rotation}deg)`;
         
+        // Обновляем позицию башни
         const turret = this.element.querySelector('.turret');
-        turret.style.transform = `translate(-50%, -50%) rotate(${this.turretRotation}deg)`;
+        if (turret) {
+            turret.style.transform = `translate(-50%, -50%) rotate(${this.turretRotation}deg)`;
+        }
 
         // Проверяем, находится ли танк в кустах
         this.checkBushCollision();
