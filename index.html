@@ -19,8 +19,18 @@
 </head>
 <body>
     <div id="game-container" class="game-container"></div>
+    
+    <!-- Панель редактора -->
+    <div class="editor-panel">
+        <button class="editor-btn" data-tool="ground">Грунт</button>
+        <button class="editor-btn" data-tool="brick">Кирпич</button>
+        <button class="editor-btn" data-tool="steel">Сталь</button>
+        <button class="editor-btn" data-tool="water">Вода</button>
+        <button class="editor-btn" data-tool="bush">Кусты</button>
+        <button class="editor-btn clear">Очистить</button>
+    </div>
 
-    <!-- Добавляем после game-container -->
+    <!-- Мобильное управление -->
     <div class="mobile-controls">
         <!-- Левый джойстик для движения -->
         <div class="movement-controls">
@@ -40,20 +50,20 @@
         </div>
     </div>
 
-    <!-- Скрипты -->
-    <script src="collision.js"></script>
-    <script src="tank.js"></script>
-    <script src="bullet.js"></script>
-    <script src="map.js"></script>
-    <script src="block.js"></script>
-    <script src="mapEditor.js"></script>
-    <script src="controls.js"></script>
-    <script src="game.js"></script>
-
-    <!-- Добавляем в body -->
+    <!-- Экран ожидания -->
     <div class="waiting-screen">
         <div class="spinner"></div>
         <div class="message">Ожидание второго игрока...</div>
     </div>
+
+    <!-- Скрипты -->
+    <script src="map.js"></script>
+    <script src="collision.js"></script>
+    <script src="tank.js"></script>
+    <script src="bullet.js"></script>
+    <script src="block.js"></script>
+    <script src="mapEditor.js"></script>
+    <script src="controls.js"></script>
+    <script src="game.js"></script>
 </body>
 </html>

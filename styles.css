@@ -139,3 +139,20 @@ html, body {
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
+
+/* На мобильных устройствах */
+@media (max-width: 768px) {
+    .editor-panel {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 200px;
+    }
+
+    .editor-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
