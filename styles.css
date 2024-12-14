@@ -1,0 +1,131 @@
+/* Базовые стили для Telegram Mini App */
+html, body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+    background: var(--tg-theme-bg-color, #333);
+}
+
+/* Контейнер игры */
+.game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: var(--tg-theme-secondary-bg-color, #222);
+}
+
+/* Адаптивные размеры для мобильных устройств */
+@media (max-width: 768px) {
+    .editor-toolbar {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-width: 200px;
+    }
+
+    .editor-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+.mobile-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    pointer-events: none; /* Чтобы не мешало игре */
+}
+
+.movement-pad,
+.turret-controls {
+    display: grid;
+    grid-gap: 10px;
+    pointer-events: auto; /* Возвращаем обработку касаний */
+}
+
+.movement-pad {
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: repeat(3, 50px);
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.control-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Расположение кнопок движения */
+.movement-pad .up { grid-area: 1 / 2; }
+.movement-pad .left { grid-area: 2 / 1; }
+.movement-pad .right { grid-area: 2 / 3; }
+.movement-pad .down { grid-area: 3 / 2; }
+
+/* Кнопки поворота башни и стрельбы */
+.turret-controls {
+    grid-template-columns: repeat(3, 50px);
+    align-items: center;
+}
+
+.control-btn.shoot {
+    background: rgba(255, 100, 100, 0.3);
+    border-color: rgba(255, 100, 100, 0.5);
+}
+
+.control-btn.shoot:active {
+    background: rgba(255, 100, 100, 0.5);
+}
+
+.editor-panel {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.editor-btn {
+    display: block;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background: #566517;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.editor-btn:hover {
+    background: #849B24;
+}
+
+.game-container.editing {
+    cursor: crosshair;
+}

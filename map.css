@@ -1,0 +1,128 @@
+.game-map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #333;
+}
+
+.block {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #444;
+    box-sizing: border-box;
+}
+
+.block.ground {
+    background: #8B4513;
+    border-color: #3c1c0a;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 3px,
+            rgba(0,0,0,0.1) 3px,
+            rgba(0,0,0,0.1) 6px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 3px,
+            rgba(0,0,0,0.1) 3px,
+            rgba(0,0,0,0.1) 6px
+        );
+}
+
+.block.destructible {
+    background: #8B4513;
+    border-color: #654321;
+}
+
+.block.water {
+    background: #0066FF;
+    border-color: #0044CC;
+    background-image: 
+        repeating-conic-gradient(
+            from 45deg,
+            #0066FF 0deg 10deg,
+            #0044CC 10deg 20deg
+        );
+    background-size: 10px 10px;
+}
+
+.editor-toolbar {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.editor-btn {
+    padding: 8px 16px;
+    background: #566517;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.editor-btn:hover {
+    background: #677628;
+}
+
+.editor-btn.active {
+    background: #788739;
+}
+
+.game-map.editing {
+    cursor: crosshair;
+}
+
+.block.brick {
+    background: #B22222;
+    border-color: #8B0000;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0,0,0,0.2) 2px,
+            rgba(0,0,0,0.2) 4px
+        );
+}
+
+.block.steel {
+    background: #808080;
+    border-color: #606060;
+    background-image: 
+        linear-gradient(90deg, transparent 50%, #909090 50%),
+        linear-gradient(0deg, transparent 50%, #909090 50%);
+    background-size: 8px 8px;
+}
+
+.block.bush {
+    background: #2D5A27;
+    border-color: #408137;
+    background-image: 
+        linear-gradient(45deg, transparent 50%, #3D7A37 50%),
+        linear-gradient(-45deg, transparent 50%, #3D7A37 50%);
+    background-size: 10px 10px;
+}
+
+.block.health-1 {
+    filter: brightness(0.7);
+}
+
+.block.health-2 {
+    filter: brightness(0.8);
+}
+
+.block.health-3 {
+    filter: brightness(0.9);
+} 
